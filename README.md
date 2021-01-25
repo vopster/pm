@@ -1,6 +1,7 @@
 # Vopster: Project Manager
 
 :warning: **Warning** :warning:
+
 ```diff
 --
 - This project is under continuous development, and it is NOT production-ready yet.
@@ -17,7 +18,7 @@
 
 - [Vopster: Project Manager](#vopster-project-manager)
   - [Introduction](#introduction)
-  - [Goals & Roadmap](#goals--roadmap)
+  - [Goals & Roadmap](#goals-roadmap)
     - [2021](#2021)
     - [2022](#2022)
   - [System Requirements](#system-requirements)
@@ -119,19 +120,19 @@
   - [Module and plugin development guidelines](#module-and-plugin-development-guidelines)
   - [Workflow examples](#workflow-examples)
   - [F.A.Q.](#faq)
-    - [Can I use `pm` for local-only development?](#can-i-use-pm-for-local-only-development)
-    - [What's an environment in `pm`?](#whats-an-environment-in-pm)
-    - [Can I use the same remote server for stage and prod environments?](#can-i-use-the-same-remote-server-for-stage-and-prod-environments)
-    - [Can I build the dev environment?](#can-i-build-the-dev-environment)
-    - [What is the use of environment versions?](#what-is-the-use-of-environment-versions)
-    - [What frameworks are supported in the current version?](#what-frameworks-are-supported-in-the-current-version)
-    - [What other frameworks will be supported?](#what-other-frameworks-will-be-supported)
-    - [Is it possible to create a project without a pre-installed framework?](#is-it-possible-to-create-a-project-without-a-pre-installed-framework)
-    - [Can I host multiple projects on the same server using `pm`?](#can-i-host-multiple-projects-on-the-same-server-using-pm)
-    - [Can I use multiple cloud providers for the same project using `pm`?](#can-i-use-multiple-cloud-providers-for-the-same-project-using-pm)
-    - [What are the premium alternatives to `pm`?](#what-are-the-premium-alternatives-to-pm)
-    - [How can I contribute?](#how-can-i-contribute)
-    - [Can I support the development in any other way?](#can-i-support-the-development-in-any-other-way)
+        - [Can I use `pm` for local-only development?](#can-i-use-pm-for-local-only-development)
+        - [What's an environment in `pm`?](#whats-an-environment-in-pm)
+        - [Can I use the same remote server for stage and prod environments?](#can-i-use-the-same-remote-server-for-stage-and-prod-environments)
+        - [Can I build the dev environment?](#can-i-build-the-dev-environment)
+        - [What is the use of environment versions?](#what-is-the-use-of-environment-versions)
+        - [What frameworks are supported in the current version?](#what-frameworks-are-supported-in-the-current-version)
+        - [What other frameworks will be supported?](#what-other-frameworks-will-be-supported)
+        - [Is it possible to create a project without a pre-installed framework?](#is-it-possible-to-create-a-project-without-a-pre-installed-framework)
+        - [Can I host multiple projects on the same server using `pm`?](#can-i-host-multiple-projects-on-the-same-server-using-pm)
+        - [Can I use multiple cloud providers for the same project using `pm`?](#can-i-use-multiple-cloud-providers-for-the-same-project-using-pm)
+        - [What are the premium alternatives to `pm`?](#what-are-the-premium-alternatives-to-pm)
+        - [How can I contribute?](#how-can-i-contribute)
+        - [Can I support the development in any other way?](#can-i-support-the-development-in-any-other-way)
   - [Credits](#credits)
 
 <!-- /code_chunk_output -->
@@ -164,11 +165,13 @@ Yet, there are many premium solutions to handle such tasks, we built a tool what
 ## System Requirements
 
 ##### OS Support
+
 - `Ubuntu / Debian`
 - `Fedora / CentOS / RedHat`
 - `MacOS`
 
 ##### Dependencies
+
 - `git`
 - `python3+`
 - `docker`
@@ -177,6 +180,7 @@ Yet, there are many premium solutions to handle such tasks, we built a tool what
 ## Installation
 
 ##### Linux
+
 ```shell
 # Not yet available.
 # wget -qO pm-setup pm.vopster.com/releases/1.0.0/installer && sudo bash pm-setup
@@ -193,7 +197,6 @@ Pluggable extensions to the main application.
 This is the main module of `pm`. It handles system related tasks, such as updates and maintenance.
 
 #### Commands
-
 
 ##### system:start
 
@@ -218,6 +221,7 @@ Restarts all services.
 ```shell
 pm system:restart
 ```
+
 ##### system:update
 
 Updates `pm` to the latest version.
@@ -286,10 +290,10 @@ $APP_PROJECTS_ROOT # The project storage directory defined in project-manager/.e
 ```
 
 #### Commands
+
 ##### project:create
 
 Creates the file structure, including the project definition file _(project.yml)_.
-
 
 ###### Basic usage
 
@@ -387,15 +391,15 @@ pm project:delete --id=my-project  --{stage|prod|all}
 
 ##### project:build
 
-Builds a specific environment from *project.yml*.
+Builds a specific environment from _project.yml_.
 
 ```shell
 pm project:build --id=my-project
 ```
 
 Other arguments:
-> `--stage` Stage environment __*(default)*__
-> `--prod` Production environment
+
+> `--stage` Stage environment **_(default)_** > `--prod` Production environment
 > `--version=<version>` Specifies a version. If not provided a new version number is automatically generated.
 
 ##### project:deploy
@@ -467,7 +471,9 @@ Synchronizes a project environment to local.
 ```shell
 pm project:sync --id=my-project --source={stage|prod}
 ```
+
 Available flags:
+
 > `--all` : Default option if no other flag was specified.
 > `--files`: Sync media files.
 > `--db`: Sync database(s).
@@ -507,7 +513,6 @@ This module is responsible for the network traffic distribution. It allows attac
 Routers are also installed as services. This module provides an abstract connector between the projects and the router.
 
 #### Plugins
-
 
 ##### Traefik
 
@@ -605,131 +610,121 @@ This module is responsible to handle docker and service related tasks. It create
 
 ##### Nginx
 
-Supported versions: `1.13` `1.14` `1.15` `1.16` `1.17` `1.18` `1.19`
-
-Default version: `1.19`
-
-Supported images:[wodby/nginx](https://github.com/wodby/nginx)
-
-Default image: `wodby/nginx`
-
+| Key | Value |
+| --- | ----- |
+| Supported versions | `1.13` `1.14` `1.15` `1.16` `1.17` `1.18` `1.19` |
+| Default version | `1.19` |
+| Supported images | - [wodby/nginx](https://github.com/wodby/nginx) |
+| Default image | `wodby/nginx` |
 
 ##### Apache2
 
-Supported versions: `2.4`
-
-Default version: `2.4`
-
-Supported images: [wodby/apache](https://github.com/wodby/apache)
-
-Default image: `wodby/apache`
+| Key | Value |
+| --- | ----- |
+| Supported versions |  `2.4` |
+| Default version | `2.4` |
+| Supported images | - [wodby/apache](https://github.com/wodby/apache) |
+| Default image | `wodby/apache` |
 
 ##### PHP
 
-Supported versions: `7.3` `7.4` `8.0`
-
-Default version: `7.4`
-
-Supported images: [wodby/php](https://github.com/wodby/php)
-
-Default image: `wodby/php`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `7.3` `7.4` `8.0` |
+| Default version | `7.4` |
+| Supported images | - [wodby/php](https://github.com/wodby/php) |
+| Default image | `wodby/php` |
 
 ##### Node
 
-Supported versions: `8.17` `10.23` `12.20` `14.15`
-
-Default version: `12.20`
-
-Supported images: [wodby/node](https://github.com/wodby/node)
-
-Default image: `wodby/node`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `8.17` `10.23` `12.20` `14.15` |
+| Default version | `12.20` |
+| Supported images | - [wodby/node](https://github.com/wodby/node) |
+| Default image | `wodby/node` |
 
 ##### MariaDB
 
+| Key | Value |
+| --- | ----- |
 | Supported versions | `10.3` `10.4` `10.5` |
 | Default version | `10.5`|
-| Supported images | [wodby/mariadb](https://github.com/wodby/mariadb) |
-| Default image: | `wodby/mariadb` |
+| Supported images | - [wodby/mariadb](https://github.com/wodby/mariadb) |
+| Default image | `wodby/mariadb` |
+
 
 ##### PostgreSQL
 
-Supported versions: `10` `11` `12` `13`
-
-Default version: `13`
-
-Supported images: [wodby/postgres](https://github.com/wodby/postgres)
-
-Default image: `wodby/postgres`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `10` `11` `12` `13` |
+| Default version | `13` |
+| Supported images | - [wodby/postgres](https://github.com/wodby/postgres) |
+| Default image | `wodby/postgres` |
 
 ##### MongoDB
 
-Supported versions: `3.6` `4.0` `4.2` `4.4`
-
-Default version: `4.4`
-
-Supported images: [mongo](https://github.com/docker-library/mongo)
-
-Default image: `mongo`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `3.6` `4.0` `4.2` `4.4` |
+| Default version | `4.4` |
+| Supported images | - [mongo](https://github.com/docker-library/mongo) |
+| Default image | `mongo` |
 
 ##### ApacheSolr
 
-Supported versions: `5.5` `6.6` `7.5` `7.6` `7.7` `8.7`
-
-Default version: `8.7`
-
-Supported images: [wodby/solr](https://github.com/wodby/solr)
-
-Default image: `wodby/solr`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `5.5` `6.6` `7.5` `7.6` `7.7` `8.7` |
+| Default version | `8.7` |
+| Supported images | - [wodby/solr](https://github.com/wodby/solr) |
+| Default image | `wodby/solr` |
 
 ##### ElasticSearch
 
-Supported versions: `5.8` `7.10`
-
-Default version: `7.10`
-
-Supported images: [wodby/elasticsearch](https://github.com/wodby/elasticsearch)
-
-Default image: `wodby/elasticsearch`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `5.8` `7.10` |
+| Default version | `7.10` |
+| Supported images | - [wodby/elasticsearch](https://github.com/wodby/elasticsearch) |
+| Default image | `wodby/elasticsearch` |
 
 ##### Redis
 
-Supported versions: `5.0` `6.0`
-
-Default version: `6.0`
-
-Supported images: [wodby/redis](https://github.com/wodby/redis)
-
-Default image: `wodby/redis`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `5.0` `6.0` |
+| Default version | `6.0` |
+| Supported images | - [wodby/redis](https://github.com/wodby/redis) |
+| Default image | `wodby/redis` |
 
 ##### Memcached
 
-Supported versions: `1.6`
-
-Default version: `1.6`
-
-Supported images: [wodby/memcached](https://github.com/wodby/memcached)
-
-Default image: `wodby/memecahed`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `1.6` |
+| Default version | `1.6` |
+| Supported images | - [wodby/memcached](https://github.com/wodby/memcached) |
+| Default image | `wodby/memecahed` |
 
 ##### Varnish
 
-Supported versions: `4.1` `6.0`
-
-Default version: `6.0`
-
-Supported images: [wodby/varnish](https://github.com/wodby/varnish)
-
-Default image: `wodby/varnish`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `4.1` `6.0` |
+| Default version | `6.0` |
+| Supported images | - [wodby/varnish](https://github.com/wodby/varnish) |
+| Default image | `wodby/varnish` |
 
 ##### phpMyAdmin
 
-Supported versions: `5.0`
-
-Default version: `5.0`
-
-Supported images: [phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)
-
-Default image: `phpmyadmin/phpmyadmin`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `5.0` |
+| Default version | `5.0` |
+| Supported images | - [phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker) |
+| Default image | `phpmyadmin/phpmyadmin` |
 
 #### Commands
 
@@ -742,6 +737,7 @@ Adds a service to a project.
 ```shell
 pm docker:service:add --project=my-project --service=<service-id>
 ```
+
 ##### docker:service:remove
 
 Removes a service from a project.
@@ -767,6 +763,7 @@ This module handles the framework management tasks, such as installation, upgrad
 #### Plugins
 
 ##### Drupal
+
 Supported versions: `7.x` `8.x` `9.x`
 
 Default services: `nginx:1.19` `php:7.4` `mariadb:10.5`
@@ -774,10 +771,12 @@ Default services: `nginx:1.19` `php:7.4` `mariadb:10.5`
 Compatible services: `solr` `elastic` `redis` `memcached`
 
 Available add-ons:
-  - **php:** `drush` `drupalconsole` `composer` `grunt` `gulp` `node`
-  - **mariadb:** `mysqltuner`
+
+- **php:** `drush` `drupalconsole` `composer` `grunt` `gulp` `node`
+- **mariadb:** `mysqltuner`
 
 ##### WordPress
+
 Supported versions: `4.x` `5.x`
 Default services: `nginx:1.19` `php:7.4` `mariadb:10.5`
 Compatible services: `solr` `elastic` `redis` `memcached`
@@ -788,6 +787,7 @@ Available add-ons:
 - **mariadb:** `mysqltuner`
 
 ##### PrestaShop
+
 Supported versions: `1.6.x` `1.7.x`
 Default services: `nginx:1.19` `php:7.4` `mariadb:10.5`
 Compatible services: `solr` `elastic` `redis` `memcached`
@@ -830,6 +830,7 @@ Adds a framework definition to the `project.yml`. A project can only have one fr
 pm framework:add \
   --project=my-project --framework=<framework-id>:<framework-version>
 ```
+
 ##### framework:remove
 
 Removes the current framework definition from the `project.yml`.
@@ -853,6 +854,7 @@ Migrates the project from a framework to another into a new dev environment.
 ```shell
 pm framework:migrate --project=my-project --framework:version=<target-version>
 ```
+
 ### Module: Cloud
 
 **About**
@@ -892,6 +894,7 @@ Lists all servers of the project.
 ```shell
 pm cloud:server:list --project=my-project
 ```
+
 ##### cloud:server:create
 
 Creates and adds a cloud server to the project.
@@ -913,9 +916,10 @@ This is a bridge module to handle version control related tasks.
 #### Plugins
 
 ##### Mail-in-a-box (self-hosted)
-##### Cloudflare `[NYI]`
-##### DNSimple `[NYI]`
 
+##### Cloudflare `[NYI]`
+
+##### DNSimple `[NYI]`
 
 ## Module and plugin development guidelines
 
@@ -933,27 +937,29 @@ This is a bridge module to handle version control related tasks.
 
 ##### What's an environment in `pm`?
 
-> Environments are isolated copies of the application. There are 3 pre-defined environments: *dev*, *stage* and *prod*:
-> __dev:__ Used for development, served from the src/ directory of the application. This is a local environment.
-> __stage:__ Used for testing. This environment holds the latest version of the app which will be published into the production environment. This environment runs on a remote server.
-> __prod:__ This environment is the released application. This environment runs on a remote server.
+> Environments are isolated copies of the application. There are 3 pre-defined environments: _dev_, _stage_ and _prod_:
+> **dev:** Used for development, served from the src/ directory of the application. This is a local environment.
+> **stage:** Used for testing. This environment holds the latest version of the app which will be published into the production environment. This environment runs on a remote server.
+> **prod:** This environment is the released application. This environment runs on a remote server.
 
 ##### Can I use the same remote server for stage and prod environments?
 
 > Yes, since environments are isolated, stage and prod can be deployed on the same, or different servers.
 
 ##### Can I build the dev environment?
-> No. The local dev environment uses the raw *src/* directory to serve the project, and the build command only accepts the __--stage__ and __--prod__ flags.
+
+> No. The local dev environment uses the raw _src/_ directory to serve the project, and the build command only accepts the **--stage** and **--prod** flags.
 
 ##### What is the use of environment versions?
 
-> They help in quick reverts (if something goes wrong during the deploy). Built environments have a version like __prod-0.0.1__, __prod-0.0.2__, and so on. Assuming that prod-0.0.2 was deployed and "something isn't right with it", we can revert with one command to prod-0.0.1, which was the latest stable release.
+> They help in quick reverts (if something goes wrong during the deploy). Built environments have a version like **prod-0.0.1**, **prod-0.0.2**, and so on. Assuming that prod-0.0.2 was deployed and "something isn't right with it", we can revert with one command to prod-0.0.1, which was the latest stable release.
 
 ##### What frameworks are supported in the current version?
 
 > The current version supports the following frameworks:
 >
 > **PHP:**
+>
 > - Drupal: `7.x`, `8.x`, `9x`
 > - WordPress: `4.x`, `5.x`
 > - PrestaShop `1.6.x`, `1.7.x`
@@ -963,6 +969,7 @@ This is a bridge module to handle version control related tasks.
 > The current version supports the following frameworks:
 >
 > **PHP:**
+>
 > - Laravel
 > - Magento
 > - CodeIgniter
@@ -976,6 +983,7 @@ This is a bridge module to handle version control related tasks.
 > - CherryPy
 >
 > **Node:**
+>
 > - AdonisJS
 > - ExpressJS
 > - MeteorJS
@@ -989,14 +997,13 @@ This is a bridge module to handle version control related tasks.
 
 > Yes. It is possible to host multiple projects on the same server.
 
-
 ##### Can I use multiple cloud providers for the same project using `pm`?
 
 > Yes. It is possible to connect multiple providers to the same project.
 
 ##### What are the premium alternatives to `pm`?
 
-> *..soon..*
+> _..soon.._
 
 ##### How can I contribute?
 
@@ -1011,7 +1018,9 @@ This is a bridge module to handle version control related tasks.
 ## Credits
 
 Supporting organizations:
- - [Vopster](vopster.com) (Romania, Oradea): [@vopster](https://github.com/vopster)
+
+- [Vopster](vopster.com) (Romania, Oradea): [@vopster](https://github.com/vopster)
 
 Contributors:
- - [@vzsigmond](https://github.com/vzsigmond)
+
+- [@vzsigmond](https://github.com/vzsigmond)
