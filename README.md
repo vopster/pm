@@ -399,8 +399,11 @@ pm project:build --id=my-project
 
 Other arguments:
 
-> `--stage` Stage environment **_(default)_** > `--prod` Production environment
-> `--version=<version>` Specifies a version. If not provided a new version number is automatically generated.
+| Option | Description |
+| ------ | ----------- |
+| `--stage` | Stage environment **_(default)_** |
+| `--prod` | Production environment |
+| `--version=<version>` | Specifies a version. If not provided a new version number is automatically generated. |
 
 ##### project:deploy
 
@@ -474,9 +477,11 @@ pm project:sync --id=my-project --source={stage|prod}
 
 Available flags:
 
-> `--all` : Default option if no other flag was specified.
-> `--files`: Sync media files.
-> `--db`: Sync database(s).
+| Option | Description |
+| ------ | ----------- |
+| `--all` | Default option if no other flag was specified. |
+| `--files` | Sync media files. |
+| `--db` | Sync database(s). |
 
 ##### project:config:set
 
@@ -764,11 +769,11 @@ This module handles the framework management tasks, such as installation, upgrad
 
 ##### Drupal
 
-Supported versions: `7.x` `8.x` `9.x`
-
-Default services: `nginx:1.19` `php:7.4` `mariadb:10.5`
-
-Compatible services: `solr` `elastic` `redis` `memcached`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `7.x` `8.x` `9.x` |
+| Default services | `nginx:1.19` `php:7.4` `mariadb:10.5` |
+| Compatible services | `solr` `elastic` `redis` `memcached` |
 
 Available add-ons:
 
@@ -777,9 +782,11 @@ Available add-ons:
 
 ##### WordPress
 
-Supported versions: `4.x` `5.x`
-Default services: `nginx:1.19` `php:7.4` `mariadb:10.5`
-Compatible services: `solr` `elastic` `redis` `memcached`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `4.x` `5.x` |
+| Default services | `nginx:1.19` `php:7.4` `mariadb:10.5` |
+| Compatible services | `solr` `elastic` `redis` `memcached` |
 
 Available add-ons:
 
@@ -788,9 +795,11 @@ Available add-ons:
 
 ##### PrestaShop
 
-Supported versions: `1.6.x` `1.7.x`
-Default services: `nginx:1.19` `php:7.4` `mariadb:10.5`
-Compatible services: `solr` `elastic` `redis` `memcached`
+| Key | Value |
+| --- | ----- |
+| Supported versions | `1.6.x` `1.7.x` |
+| Default services | `nginx:1.19` `php:7.4` `mariadb:10.5` |
+| Compatible services | `solr` `elastic` `redis` `memcached` |
 
 Available add-ons:
 
