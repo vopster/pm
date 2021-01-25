@@ -120,19 +120,19 @@
   - [Module and plugin development guidelines](#module-and-plugin-development-guidelines)
   - [Workflow examples](#workflow-examples)
   - [F.A.Q.](#faq)
-        - [Can I use `pm` for local-only development?](#can-i-use-pm-for-local-only-development)
-        - [What's an environment in `pm`?](#whats-an-environment-in-pm)
-        - [Can I use the same remote server for stage and prod environments?](#can-i-use-the-same-remote-server-for-stage-and-prod-environments)
-        - [Can I build the dev environment?](#can-i-build-the-dev-environment)
-        - [What is the use of environment versions?](#what-is-the-use-of-environment-versions)
-        - [What frameworks are supported in the current version?](#what-frameworks-are-supported-in-the-current-version)
-        - [What other frameworks will be supported?](#what-other-frameworks-will-be-supported)
-        - [Is it possible to create a project without a pre-installed framework?](#is-it-possible-to-create-a-project-without-a-pre-installed-framework)
-        - [Can I host multiple projects on the same server using `pm`?](#can-i-host-multiple-projects-on-the-same-server-using-pm)
-        - [Can I use multiple cloud providers for the same project using `pm`?](#can-i-use-multiple-cloud-providers-for-the-same-project-using-pm)
-        - [What are the premium alternatives to `pm`?](#what-are-the-premium-alternatives-to-pm)
-        - [How can I contribute?](#how-can-i-contribute)
-        - [Can I support the development in any other way?](#can-i-support-the-development-in-any-other-way)
+    - [Can I use `pm` for local-only development?](#can-i-use-pm-for-local-only-development)
+    - [What's an environment in `pm`?](#whats-an-environment-in-pm)
+    - [Can I use the same remote server for stage and prod environments?](#can-i-use-the-same-remote-server-for-stage-and-prod-environments)
+    - [Can I build the dev environment?](#can-i-build-the-dev-environment)
+    - [What is the use of environment versions?](#what-is-the-use-of-environment-versions)
+    - [What frameworks are supported in the current version?](#what-frameworks-are-supported-in-the-current-version)
+    - [What other frameworks will be supported?](#what-other-frameworks-will-be-supported)
+    - [Is it possible to create a project without a pre-installed framework?](#is-it-possible-to-create-a-project-without-a-pre-installed-framework)
+    - [Can I host multiple projects on the same server using `pm`?](#can-i-host-multiple-projects-on-the-same-server-using-pm)
+    - [Can I use multiple cloud providers for the same project using `pm`?](#can-i-use-multiple-cloud-providers-for-the-same-project-using-pm)
+    - [What are the premium alternatives to `pm`?](#what-are-the-premium-alternatives-to-pm)
+    - [How can I contribute?](#how-can-i-contribute)
+    - [Can I support the development in any other way?](#can-i-support-the-development-in-any-other-way)
   - [Credits](#credits)
 
 <!-- /code_chunk_output -->
@@ -940,30 +940,33 @@ This is a bridge module to handle version control related tasks.
 
 ## F.A.Q.
 
-##### Can I use `pm` for local-only development?
+### Can I use `pm` for local-only development?
 
 > Yes. In this case building your application is not mandatory, since you will be only working on your `dev` environment.
 
-##### What's an environment in `pm`?
+### What's an environment in `pm`?
 
 > Environments are isolated copies of the application. There are 3 pre-defined environments: _dev_, _stage_ and _prod_:
+>
 > **dev:** Used for development, served from the src/ directory of the application. This is a local environment.
+>
 > **stage:** Used for testing. This environment holds the latest version of the app which will be published into the production environment. This environment runs on a remote server.
+>
 > **prod:** This environment is the released application. This environment runs on a remote server.
 
-##### Can I use the same remote server for stage and prod environments?
+### Can I use the same remote server for stage and prod environments?
 
 > Yes, since environments are isolated, stage and prod can be deployed on the same, or different servers.
 
-##### Can I build the dev environment?
+### Can I build the dev environment?
 
 > No. The local dev environment uses the raw _src/_ directory to serve the project, and the build command only accepts the **--stage** and **--prod** flags.
 
-##### What is the use of environment versions?
+### What is the use of environment versions?
 
 > They help in quick reverts (if something goes wrong during the deploy). Built environments have a version like **prod-0.0.1**, **prod-0.0.2**, and so on. Assuming that prod-0.0.2 was deployed and "something isn't right with it", we can revert with one command to prod-0.0.1, which was the latest stable release.
 
-##### What frameworks are supported in the current version?
+### What frameworks are supported in the current version?
 
 > The current version supports the following frameworks:
 >
@@ -973,7 +976,7 @@ This is a bridge module to handle version control related tasks.
 > - WordPress: `4.x`, `5.x`
 > - PrestaShop `1.6.x`, `1.7.x`
 
-##### What other frameworks will be supported?
+### What other frameworks will be supported?
 
 > The current version supports the following frameworks:
 >
@@ -998,28 +1001,28 @@ This is a bridge module to handle version control related tasks.
 > - MeteorJS
 > - Sails.js
 
-##### Is it possible to create a project without a pre-installed framework?
+### Is it possible to create a project without a pre-installed framework?
 
 > Yes. The framework flag is only optional.
 
-##### Can I host multiple projects on the same server using `pm`?
+### Can I host multiple projects on the same server using `pm`?
 
 > Yes. It is possible to host multiple projects on the same server.
 
-##### Can I use multiple cloud providers for the same project using `pm`?
+### Can I use multiple cloud providers for the same project using `pm`?
 
 > Yes. It is possible to connect multiple providers to the same project.
 
-##### What are the premium alternatives to `pm`?
+### What are the premium alternatives to `pm`?
 
 > _..soon.._
 
-##### How can I contribute?
+### How can I contribute?
 
 > Contributors are always welcome. Just check the issues and create your PR (respecting our guidelines) to contribute to the core development.
 > It is also possible to write **modules** to integrate things, what we didn't think of (yet).
 
-##### Can I support the development in any other way?
+### Can I support the development in any other way?
 
 > Yes. Since this is an open-source project, any donations are welcome to support the development costs.
 > We're taking this project seriously, but are resources are limited. It would be great if we could allocate more time and interns to speed up things.
