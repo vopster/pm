@@ -1,7 +1,5 @@
 # Vopster: Project Manager
 
-=============
-
 ```diff
 --
 - [!]Attention[!] -
