@@ -646,13 +646,10 @@ Default image: `wodby/node`
 
 ##### MariaDB
 
-Supported versions: `10.3` `10.4` `10.5`
-
-Default version: `10.5`
-
-Supported images: [wodby/mariadb](https://github.com/wodby/mariadb)
-
-Default image: `wodby/mariadb`
+| Supported versions | `10.3` `10.4` `10.5` |
+| Default version | `10.5`|
+| Supported images | [wodby/mariadb](https://github.com/wodby/mariadb) |
+| Default image: | `wodby/mariadb` |
 
 ##### PostgreSQL
 
