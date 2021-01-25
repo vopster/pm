@@ -1,13 +1,11 @@
 # Vopster: Project Manager
 
+:warning: **Warning** :warning:
 ```diff
 --
-- [!]Attention[!] -
-- ----------------
 - This project is under continuous development, and it is NOT production-ready yet.
 - The installer is not published, yet.
 - Stay tuned by following.
-- ----------------
 --
 ```
 
