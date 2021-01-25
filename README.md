@@ -17,7 +17,7 @@
 
 - [Vopster: Project Manager](#vopster-project-manager)
   - [Introduction](#introduction)
-  - [Goals & Roadmap](#goals-roadmap)
+  - [Goals & Roadmap](#goals--roadmap)
     - [2021](#2021)
     - [2022](#2022)
   - [System Requirements](#system-requirements)
@@ -606,93 +606,132 @@ This module is responsible to handle docker and service related tasks. It create
 ##### Nginx
 
 Supported versions: `1.13` `1.14` `1.15` `1.16` `1.17` `1.18` `1.19`
+
 Default version: `1.19`
+
 Supported images:[wodby/nginx](https://github.com/wodby/nginx)
+
 Default image: `wodby/nginx`
 
 
 ##### Apache2
 
 Supported versions: `2.4`
+
 Default version: `2.4`
+
 Supported images: [wodby/apache](https://github.com/wodby/apache)
+
 Default image: `wodby/apache`
 
 ##### PHP
 
 Supported versions: `7.3` `7.4` `8.0`
+
 Default version: `7.4`
+
 Supported images: [wodby/php](https://github.com/wodby/php)
+
 Default image: `wodby/php`
 
 ##### Node
 
 Supported versions: `8.17` `10.23` `12.20` `14.15`
+
 Default version: `12.20`
+
 Supported images: [wodby/node](https://github.com/wodby/node)
+
 Default image: `wodby/node`
 
 ##### MariaDB
 
 Supported versions: `10.3` `10.4` `10.5`
+
 Default version: `10.5`
+
 Supported images: [wodby/mariadb](https://github.com/wodby/mariadb)
+
 Default image: `wodby/mariadb`
 
 ##### PostgreSQL
 
 Supported versions: `10` `11` `12` `13`
+
 Default version: `13`
+
 Supported images: [wodby/postgres](https://github.com/wodby/postgres)
+
 Default image: `wodby/postgres`
 
 ##### MongoDB
 
 Supported versions: `3.6` `4.0` `4.2` `4.4`
+
 Default version: `4.4`
+
 Supported images: [mongo](https://github.com/docker-library/mongo)
+
 Default image: `mongo`
 
 ##### ApacheSolr
 
 Supported versions: `5.5` `6.6` `7.5` `7.6` `7.7` `8.7`
+
 Default version: `8.7`
+
 Supported images: [wodby/solr](https://github.com/wodby/solr)
+
 Default image: `wodby/solr`
 
 ##### ElasticSearch
 
 Supported versions: `5.8` `7.10`
+
 Default version: `7.10`
+
 Supported images: [wodby/elasticsearch](https://github.com/wodby/elasticsearch)
+
 Default image: `wodby/elasticsearch`
 
 ##### Redis
 
 Supported versions: `5.0` `6.0`
+
 Default version: `6.0`
+
 Supported images: [wodby/redis](https://github.com/wodby/redis)
+
 Default image: `wodby/redis`
 
 ##### Memcached
 
 Supported versions: `1.6`
+
 Default version: `1.6`
+
 Supported images: [wodby/memcached](https://github.com/wodby/memcached)
+
 Default image: `wodby/memecahed`
 
 ##### Varnish
 
 Supported versions: `4.1` `6.0`
+
 Default version: `6.0`
+
 Supported images: [wodby/varnish](https://github.com/wodby/varnish)
+
 Default image: `wodby/varnish`
 
 ##### phpMyAdmin
 
 Supported versions: `5.0`
+
 Default version: `5.0`
+
 Supported images: [phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)
+
 Default image: `phpmyadmin/phpmyadmin`
 
 #### Commands
@@ -732,7 +771,9 @@ This module handles the framework management tasks, such as installation, upgrad
 
 ##### Drupal
 Supported versions: `7.x` `8.x` `9.x`
+
 Default services: `nginx:1.19` `php:7.4` `mariadb:10.5`
+
 Compatible services: `solr` `elastic` `redis` `memcached`
 
 Available add-ons:
