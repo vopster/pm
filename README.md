@@ -56,6 +56,7 @@
     - [Module: Router](#module-router)
       - [Plugins](#plugins)
         - [Traefik](#traefik)
+        - [HAProxy `[NYI]`](#haproxy-nyi)
         - [Nginx reverse-proxy `[NYI]`](#nginx-reverse-proxy-nyi)
         - [Zookeeper `[NYI]`](#zookeeper-nyi)
       - [Commands](#commands-2)
@@ -713,6 +714,10 @@ Routers are also installed as services. This module provides an abstract connect
 ##### Traefik
 
 The default router used by `pm`. It handles the private and public network traffic.
+
+##### HAProxy `[NYI]`
+
+A basic HAProxy to route the network traffic.
 
 ##### Nginx reverse-proxy `[NYI]`
 
