@@ -39,8 +39,6 @@
       - [Project file structure](#project-file-structure)
       - [Commands](#commands-1)
         - [project:create](#projectcreate)
-          - [Basic usage](#basic-usage)
-          - [Advanced usage](#advanced-usage)
         - [project:delete](#projectdelete)
         - [project:build](#projectbuild)
         - [project:deploy](#projectdeploy)
@@ -235,16 +233,27 @@ pm system:update
 Sets a system configration value by its key.
 
 ```shell
-pm system:config:set --key=config-key --value=config-value
+pm system:config:set
 ```
+
+| Option    | Description |
+| --------- | ----------- |
+| `--key`   | Configuration key            |
+| `--value` | Configuration value            |
 
 ##### system:config:get
 
 Gets a system configration value by its key.
 
 ```shell
-pm system:config:get --key=config-key
+pm system:config:get
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--key`     | Configuration key           |
 
 ### Module: Project
 
@@ -293,213 +302,335 @@ $APP_PROJECTS_ROOT # The project storage directory defined in project-manager/.e
 
 ##### project:create
 
-Creates the file structure, including the project definition file _(project.yml)_.
-
-###### Basic usage
+Creates the file structure, including the project definition file: `project.yml`.
 
 ```shell
-pm project:create \
-  --id=myproject \
-  --framework=drupal:8 \
-  --server="hetzner:111.112.113.114" \
+pm project:create
 ```
+Available arguments:
 
-###### Advanced usage
+<table>
+<thead>
+  <tr>
+    <th>
+      Option
+    </th>
+    <th>
+      Description
+    </th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><code>--id</code></td>
+    <td>The unique identifier of the project.</td>
+  </tr>
+  <tr>
+    <td><code>--build</code></td>
+    <td>Builds the project from the generated <code>project.yml</code></td>
+  </tr>
+  <tr>
+    <td><code>--start</code></td>
+    <td>Starts all services after build.</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><strong>Framework</strong></td>
+  </tr>
+  <tr>
+    <td width="250"><code>--framework</code></td>
+    <td>
+    <p>The framework to install / use with the project.</p>
+    <p>
+      Available options: <code>drupal:7</code> <code>drupal:8</code> <code>drupal:9</code> <code>wordpress:4</code> <code>wordpress:5</code> <code>prestashop:1.6</code> <code>prestashop:1.7</code>
+    </p>
+    <p>Default: <code>None</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="250"><code>--framework:addon:add</code></td>
+    <td>
+    <p>Adds an extension for the framework.</p>
+    <p>
+      <strong>Globally available</strong> addons:
+      <ul>
+        <li><code>php:composer</code> - default</li>
+        <li><code>php:grunt</code></li>
+        <li><code>php:gulp</code></li>
+        <li><code>php:platformsh</code></li>
+        <li><code>db:mysqltuner</code></li>
+      </ul>
+      <strong>Drupal</strong> addons:
+      <ul>
+        <li><code>php:drush</code> - default</li>
+        <li><code>php:drupalconsole</code> - default</li>
+      </ul>
+      <strong>WordPress</strong> framework addons:
+      <ul>
+        <li><code>php:wp-cli</code> - default</li>
+      </ul>
+    </p>
+    </td>
+  </tr>
+  <tr>
+    <td width="250"><code>--framework:addon:remove</code></td>
+    <td>
+    <p>Removes a default extension from the framework.</p>
+    <p>
+      <strong>Drupal</strong> addons:
+      <ul>
+        <li><code>php:drush</code></li>
+        <li><code>php:drupalconsole</code></li>
+      </ul>
+    </p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><strong>Docker services</strong></td>
+  </tr>
+  <tr>
+    <td><code>--docker</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>--docker:service:add</code></td>
+    <td>
+      <p>Adds a services to the <code>project.yml</code></p>
+      <p>
+        Available options: <code>solr</code> <code>elastic</code> <code>redis</code> <code>memcached</code> <code>rsyslog</code>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td><code>--docker:service:remove</code></td>
+    <td>Removes any default services recommended for a framework.</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><strong>Cloud</strong></td>
+  </tr>
+  <tr>
+    <td><code>--cloud</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><strong>Version Control</strong></td>
+  </tr>
+  <tr>
+    <td><code>--vsc</code></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><strong>Router</strong></td>
+  </tr>
+  <tr>
+    <td><code>--router</code></td>
+    <td></td>
+  </tr>
+</tbody>
+</table>
 
-```shell
-pm project:create \
-  --id=myproject \
-
-  ###
-  # Framework
-  ###
-  --framework:type=drupal \
-  --framework:version=8 \
-  # or (short)
-  --framework=drupal:8
-
-  ###
-  # Server
-  ###
-  --server:provider=hetzner \
-  --server:ip="111.112.113.114" \
-  # or (short)
-  --server="hetzner:111.112.113.114" # One-liner to set the server and we don't need advanced options.
-
-  --server{stage}:provider=hetzner \ # The cloud provider
-  --server{stage}:ip="11.22.33.44" \ # If the instance exists, we need to provide its IP.
-  --server{db}:ip="10.0.0.1" \ # If we want to use a dedicated DB server.
-  --server{db}:host="db.private-net" \ # Setting a hostname for the dedicated DB server.
-  --server{cache}:ip="10.0.0.2" \ # If we want to use a dedicated cache server.
-  --server{cache}:host="cache.private-net" \ # Setting a hostname for the dedicated cache server.
-
-  ###
-  # Version control
-  ###
-  --vsc:type=gitlab \
-  --vsc:host=mygitlaburl.com \
-  # or (short)
-  --vsc=gitlab:mygitlaburl.com \
-
-  --vsc:port=10444 \ # if the instance is using a non-standard port.
-  --vsc:gitlab:user="" \
-  --vsc:gitlab:mail="" \
-  --vsc:gitlab:deploy-user="" \
-  --vsc:gitlab:deploy-mail="" \
-  --vsc:gitlab:deploy-token="" \
-  --vsc:plugin:autodeploy
-
-  ###
-  # Services
-  ###
-  --service:stack=lemp \ # or lamp
-  --service:php=7.4 \ # setting a specific PHP version for the stack.
-  --service:cache=redis \ # enabling Redis. Other options: memcached
-  --service:search=solr \ # enabling Solr. Other options: elastic
-  --service:http-cache=varnish \ # enabling Varnish
-
-  ###
-  # Router
-  ###
-  # defaults:
-  --router:ssl=letsencrypt \
-  --router{dev}:ssl=mkcert \
-  --router{prod}:https=true \
-  --router{stage}:https=true \
-  --router{dev}:domain="dev.{domain}"
-  --router{stage}:domain="dedicated-stage-domain.com, stage.{domain}"
-
-  --router:domain="example.com"
-  --router{prod}:alias{gb}="example.co.uk"
-  --router{prod}:alias{de}="example.de, de.example.com"
-
-  ###
-  # Flags
-  ###
-  --build # Builds the project / services.
-  # or
-  --start # Builds and starts the services.
-```
 
 ##### project:delete
 
 Deletes a project or a project environment.
 
 ```shell
-pm project:delete --id=my-project  --{stage|prod|all}
+pm project:delete
 ```
+
+| Option               | Description                                    |
+| -------------------- | ---------------------------------------------- |
+| `--id`               |  |
+| `--env`              |  |
 
 ##### project:build
 
 Builds a specific environment from _project.yml_.
 
 ```shell
-pm project:build --id=my-project
+pm project:build
 ```
 
-Other arguments:
+Available arguments:
 
-| Option | Description |
-| ------ | ----------- |
-| `--stage` | Stage environment **_(default)_** |
-| `--prod` | Production environment |
-| `--version=<version>` | Specifies a version. If not provided a new version number is automatically generated. |
+| Option                | Description |
+| --------------------- | ----------- |
+| `--id`                |             |
+| `--env`               |             |
+| `--version`           |             |
 
 ##### project:deploy
 
 ```shell
-pm project:deploy --id=my-project --{stage|prod} --version="1.0.1"
+pm project:deploy
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--id`      |             |
+| `--env`     |             |
+| `--version` |             |
 
 ##### project:start
 
 Starts all services of the project environment.
 
 ```shell
-pm project:start --id=my-project --{dev|stage|prod}
+pm project:start
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--id`      |             |
+| `--env`     |             |
+| `--version` |             |
 
 ##### project:stop
 
 Stops all services of the project environment.
 
 ```shell
-pm project:stop --id=my-project --{dev|stage|prod}
+pm project:stop
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--id`      |             |
+| `--env`     |             |
+
 
 ##### project:restart
 
 Restarts all services of the project environment.
 
 ```shell
-pm project:restart --id=my-project --{dev|stage|prod}
+pm project:restart
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--id`      |             |
+| `--env`     |             |
 
 ##### project:backup:list
 
 Lists the current backups of the project.
 
 ```shell
-pm project:backup:list --id=my-project --{stage|prod}
+pm project:backup:list
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--id`      |             |
+| `--env`     |             |
 
 ##### project:backup:create
 
 Creates a full backup of the project environment, including files and databases.
 
 ```shell
-pm project:backup:create --id=my-project --{dev|stage|prod} --backup=backup-id
+pm project:backup:create
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--id`      |             |
+| `--env`     |             |
+| `--backup`  |             |
 
 ##### project:backup:restore
 
 Restores a backup by its ID.
 
 ```shell
-pm project:backup:restore --id=my-project --{dev|stage|prod} --backup=backup-id
+pm project:backup:restore
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--id`      |             |
+| `--env`     |             |
+| `--backup`  |             |
 
 ##### project:backup:delete
 
 Deletes a backup by its ID.
 
 ```shell
-pm project:backup:create --id=my-project --{dev|stage|prod} --backup=backup-id
+pm project:backup:create
 ```
+
+Available arguments:
+
+| Option      | Description |
+| ----------- | ----------- |
+| `--id`      |             |
+| `--env`     |             |
+| `--backup`  |             |
 
 ##### project:sync
 
 Synchronizes a project environment to local.
 
 ```shell
-pm project:sync --id=my-project --source={stage|prod}
+pm project:sync
 ```
 
 Available flags:
 
-| Option | Description |
-| ------ | ----------- |
-| `--all` | Default option if no other flag was specified. |
-| `--files` | Sync media files. |
-| `--db` | Sync database(s). |
+| Option    | Description                                    |
+| --------- | ---------------------------------------------- |
+| `--source`|                                                |
+| `--all`   | Default option if no other flag was specified. |
+| `--files` | Sync media files.                              |
+| `--db`    | Sync database(s).                              |
 
 ##### project:config:set
 
 Sets a project configuration value by key.
 
 ```shell
-pm project:config:set --id=my-project --{dev|stage|prod} \
-  --key=config-key --value=config-value
+pm project:config:set
 ```
+
+Available arguments:
+
+| Option    | Description                                    |
+| --------- | ---------------------------------------------- |
+| `--id`    | |
+| `--env`   | |
+| `--key`   | |
+| `--value` | |
 
 ##### project:config:get
 
 Returns a project configuration value by key.
 
 ```shell
-pm project:config:get --id=my-project --{dev|stage|prod} \
-  --key=config-key
+pm project:config:get
 ```
+
+Available arguments:
+
+| Option  | Description |
+| ------- | ----------- |
+| `--id`  |             |
+| `--env` |             |
+| `--key` | |
 
 ##### project:cli
 
@@ -615,121 +746,120 @@ This module is responsible to handle docker and service related tasks. It create
 
 ##### Nginx
 
-| Key | Value |
-| --- | ----- |
+| Key                | Value                                            |
+| ------------------ | ------------------------------------------------ |
 | Supported versions | `1.13` `1.14` `1.15` `1.16` `1.17` `1.18` `1.19` |
-| Default version | `1.19` |
-| Supported images | - [wodby/nginx](https://github.com/wodby/nginx) |
-| Default image | `wodby/nginx` |
+| Default version    | `1.19`                                           |
+| Supported images   | - [wodby/nginx](https://github.com/wodby/nginx)  |
+| Default image      | `wodby/nginx`                                    |
 
 ##### Apache2
 
-| Key | Value |
-| --- | ----- |
-| Supported versions |  `2.4` |
-| Default version | `2.4` |
-| Supported images | - [wodby/apache](https://github.com/wodby/apache) |
-| Default image | `wodby/apache` |
+| Key                | Value                                             |
+| ------------------ | ------------------------------------------------- |
+| Supported versions | `2.4`                                             |
+| Default version    | `2.4`                                             |
+| Supported images   | - [wodby/apache](https://github.com/wodby/apache) |
+| Default image      | `wodby/apache`                                    |
 
 ##### PHP
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `7.3` `7.4` `8.0` |
-| Default version | `7.4` |
-| Supported images | - [wodby/php](https://github.com/wodby/php) |
-| Default image | `wodby/php` |
+| Key                | Value                                       |
+| ------------------ | ------------------------------------------- |
+| Supported versions | `7.3` `7.4` `8.0`                           |
+| Default version    | `7.4`                                       |
+| Supported images   | - [wodby/php](https://github.com/wodby/php) |
+| Default image      | `wodby/php`                                 |
 
 ##### Node
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `8.17` `10.23` `12.20` `14.15` |
-| Default version | `12.20` |
-| Supported images | - [wodby/node](https://github.com/wodby/node) |
-| Default image | `wodby/node` |
+| Key                | Value                                         |
+| ------------------ | --------------------------------------------- |
+| Supported versions | `8.17` `10.23` `12.20` `14.15`                |
+| Default version    | `12.20`                                       |
+| Supported images   | - [wodby/node](https://github.com/wodby/node) |
+| Default image      | `wodby/node`                                  |
 
 ##### MariaDB
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `10.3` `10.4` `10.5` |
-| Default version | `10.5`|
-| Supported images | - [wodby/mariadb](https://github.com/wodby/mariadb) |
-| Default image | `wodby/mariadb` |
-
+| Key                | Value                                               |
+| ------------------ | --------------------------------------------------- |
+| Supported versions | `10.3` `10.4` `10.5`                                |
+| Default version    | `10.5`                                              |
+| Supported images   | - [wodby/mariadb](https://github.com/wodby/mariadb) |
+| Default image      | `wodby/mariadb`                                     |
 
 ##### PostgreSQL
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `10` `11` `12` `13` |
-| Default version | `13` |
-| Supported images | - [wodby/postgres](https://github.com/wodby/postgres) |
-| Default image | `wodby/postgres` |
+| Key                | Value                                                 |
+| ------------------ | ----------------------------------------------------- |
+| Supported versions | `10` `11` `12` `13`                                   |
+| Default version    | `13`                                                  |
+| Supported images   | - [wodby/postgres](https://github.com/wodby/postgres) |
+| Default image      | `wodby/postgres`                                      |
 
 ##### MongoDB
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `3.6` `4.0` `4.2` `4.4` |
-| Default version | `4.4` |
-| Supported images | - [mongo](https://github.com/docker-library/mongo) |
-| Default image | `mongo` |
+| Key                | Value                                              |
+| ------------------ | -------------------------------------------------- |
+| Supported versions | `3.6` `4.0` `4.2` `4.4`                            |
+| Default version    | `4.4`                                              |
+| Supported images   | - [mongo](https://github.com/docker-library/mongo) |
+| Default image      | `mongo`                                            |
 
 ##### ApacheSolr
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `5.5` `6.6` `7.5` `7.6` `7.7` `8.7` |
-| Default version | `8.7` |
-| Supported images | - [wodby/solr](https://github.com/wodby/solr) |
-| Default image | `wodby/solr` |
+| Key                | Value                                         |
+| ------------------ | --------------------------------------------- |
+| Supported versions | `5.5` `6.6` `7.5` `7.6` `7.7` `8.7`           |
+| Default version    | `8.7`                                         |
+| Supported images   | - [wodby/solr](https://github.com/wodby/solr) |
+| Default image      | `wodby/solr`                                  |
 
 ##### ElasticSearch
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `5.8` `7.10` |
-| Default version | `7.10` |
-| Supported images | - [wodby/elasticsearch](https://github.com/wodby/elasticsearch) |
-| Default image | `wodby/elasticsearch` |
+| Key                | Value                                                           |
+| ------------------ | --------------------------------------------------------------- |
+| Supported versions | `5.8` `7.10`                                                    |
+| Default version    | `7.10`                                                          |
+| Supported images   | - [wodby/elasticsearch](https://github.com/wodby/elasticsearch) |
+| Default image      | `wodby/elasticsearch`                                           |
 
 ##### Redis
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `5.0` `6.0` |
-| Default version | `6.0` |
-| Supported images | - [wodby/redis](https://github.com/wodby/redis) |
-| Default image | `wodby/redis` |
+| Key                | Value                                           |
+| ------------------ | ----------------------------------------------- |
+| Supported versions | `5.0` `6.0`                                     |
+| Default version    | `6.0`                                           |
+| Supported images   | - [wodby/redis](https://github.com/wodby/redis) |
+| Default image      | `wodby/redis`                                   |
 
 ##### Memcached
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `1.6` |
-| Default version | `1.6` |
-| Supported images | - [wodby/memcached](https://github.com/wodby/memcached) |
-| Default image | `wodby/memecahed` |
+| Key                | Value                                                   |
+| ------------------ | ------------------------------------------------------- |
+| Supported versions | `1.6`                                                   |
+| Default version    | `1.6`                                                   |
+| Supported images   | - [wodby/memcached](https://github.com/wodby/memcached) |
+| Default image      | `wodby/memecahed`                                       |
 
 ##### Varnish
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `4.1` `6.0` |
-| Default version | `6.0` |
-| Supported images | - [wodby/varnish](https://github.com/wodby/varnish) |
-| Default image | `wodby/varnish` |
+| Key                | Value                                               |
+| ------------------ | --------------------------------------------------- |
+| Supported versions | `4.1` `6.0`                                         |
+| Default version    | `6.0`                                               |
+| Supported images   | - [wodby/varnish](https://github.com/wodby/varnish) |
+| Default image      | `wodby/varnish`                                     |
 
 ##### phpMyAdmin
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `5.0` |
-| Default version | `5.0` |
-| Supported images | - [phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker) |
-| Default image | `phpmyadmin/phpmyadmin` |
+| Key                | Value                                                           |
+| ------------------ | --------------------------------------------------------------- |
+| Supported versions | `5.0`                                                           |
+| Default version    | `5.0`                                                           |
+| Supported images   | - [phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker) |
+| Default image      | `phpmyadmin/phpmyadmin`                                         |
 
 #### Commands
 
@@ -769,11 +899,11 @@ This module handles the framework management tasks, such as installation, upgrad
 
 ##### Drupal
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `7.x` `8.x` `9.x` |
-| Default services | `nginx:1.19` `php:7.4` `mariadb:10.5` |
-| Compatible services | `solr` `elastic` `redis` `memcached` |
+| Key                 | Value                                 |
+| ------------------- | ------------------------------------- |
+| Supported versions  | `7.x` `8.x` `9.x`                     |
+| Default services    | `nginx:1.19` `php:7.4` `mariadb:10.5` |
+| Compatible services | `solr` `elastic` `redis` `memcached`  |
 
 Available add-ons:
 
@@ -782,11 +912,11 @@ Available add-ons:
 
 ##### WordPress
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `4.x` `5.x` |
-| Default services | `nginx:1.19` `php:7.4` `mariadb:10.5` |
-| Compatible services | `solr` `elastic` `redis` `memcached` |
+| Key                 | Value                                 |
+| ------------------- | ------------------------------------- |
+| Supported versions  | `4.x` `5.x`                           |
+| Default services    | `nginx:1.19` `php:7.4` `mariadb:10.5` |
+| Compatible services | `solr` `elastic` `redis` `memcached`  |
 
 Available add-ons:
 
@@ -795,11 +925,11 @@ Available add-ons:
 
 ##### PrestaShop
 
-| Key | Value |
-| --- | ----- |
-| Supported versions | `1.6.x` `1.7.x` |
-| Default services | `nginx:1.19` `php:7.4` `mariadb:10.5` |
-| Compatible services | `solr` `elastic` `redis` `memcached` |
+| Key                 | Value                                 |
+| ------------------- | ------------------------------------- |
+| Supported versions  | `1.6.x` `1.7.x`                       |
+| Default services    | `nginx:1.19` `php:7.4` `mariadb:10.5` |
+| Compatible services | `solr` `elastic` `redis` `memcached`  |
 
 Available add-ons:
 
