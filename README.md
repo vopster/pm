@@ -116,6 +116,7 @@
         - [Mail-in-a-box (self-hosted)](#mail-in-a-box-self-hosted)
         - [Cloudflare `[NYI]`](#cloudflare-nyi)
         - [DNSimple `[NYI]`](#dnsimple-nyi)
+  - [CI/CD guidelines](#cicd-guidelines)
   - [Module and plugin development guidelines](#module-and-plugin-development-guidelines)
   - [Workflow examples](#workflow-examples)
   - [F.A.Q.](#faq)
@@ -1253,6 +1254,10 @@ This is a bridge module to handle version control related tasks.
 ##### Cloudflare `[NYI]`
 
 ##### DNSimple `[NYI]`
+
+## CI/CD guidelines
+
+> .. soon ..
 
 ## Module and plugin development guidelines
 
