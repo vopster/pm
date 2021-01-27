@@ -236,7 +236,7 @@ Sets a system configration value by its key.
 pm system:config:set
 ```
 
-| Option    | Description |
+| Argument    | Description |
 | --------- | ----------- |
 | `--key`   | Configuration key            |
 | `--value` | Configuration value            |
@@ -251,7 +251,7 @@ pm system:config:get
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
 | `--key`     | Configuration key           |
 
@@ -313,7 +313,7 @@ Available arguments:
 <thead>
   <tr>
     <th>
-      Option
+      Argument
     </th>
     <th>
       Description
@@ -351,7 +351,7 @@ Available arguments:
     <td>
     <p>Adds an extension for the framework.</p>
     <p>
-      <strong>Globally available</strong> addons:
+      <strong>Global</strong> framework addons:
       <ul>
         <li><code>php:composer</code> - default</li>
         <li><code>php:grunt</code></li>
@@ -359,7 +359,7 @@ Available arguments:
         <li><code>php:platformsh</code></li>
         <li><code>db:mysqltuner</code></li>
       </ul>
-      <strong>Drupal</strong> addons:
+      <strong>Drupal</strong> framework addons:
       <ul>
         <li><code>php:drush</code> - default</li>
         <li><code>php:drupalconsole</code> - default</li>
@@ -374,22 +374,11 @@ Available arguments:
   <tr>
     <td width="250"><code>--framework:addon:remove</code></td>
     <td>
-    <p>Removes a default extension from the framework.</p>
-    <p>
-      <strong>Drupal</strong> addons:
-      <ul>
-        <li><code>php:drush</code></li>
-        <li><code>php:drupalconsole</code></li>
-      </ul>
-    </p>
+    <p>Removes any default extension from the framework.</p>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="center"><strong>Docker services</strong></td>
-  </tr>
-  <tr>
-    <td><code>--docker</code></td>
-    <td></td>
   </tr>
   <tr>
     <td><code>--docker:service:add</code></td>
@@ -408,22 +397,85 @@ Available arguments:
     <td colspan="2" align="center"><strong>Cloud</strong></td>
   </tr>
   <tr>
-    <td><code>--cloud</code></td>
-    <td></td>
+    <td><code>--cloud:provider:register</code></td>
+    <td>
+      <p>Registers a cloud provider to manage server instances from the CLI.</p>
+      <p>
+        Available options: <code>hetzner</code> <code>digitalocean</code> <code>aws</code>
+      </p>
+    </td>
+  <tr>
+    <td><code>--cloud:server:ip</code></td>
+    <td>
+      <p>If a server was already created, it can be attached to the project with its IP address. For remote management, the <code>pm</code> client must be able to connect to the server through <code>ssh</code>. </p>
+    </td>
+  </tr>
+  <tr>
+    <td><code>--cloud:server:ssh-user</code></td>
+    <td>
+      <p>The ssh user used for the connection.</p>
+    </td>
+  </tr>
+  <tr>
+    <td><code>--cloud:server:ssh-key</code></td>
+    <td>
+      <p>The ssh private key used for the connection.</p>
+      <p>Default: <code>~/.ssh/id_rsa</code></p>
+    </td>
   </tr>
   <tr>
     <td colspan="2" align="center"><strong>Version Control</strong></td>
   </tr>
   <tr>
-    <td><code>--vsc</code></td>
-    <td></td>
+    <td><code>--vsc:type</code></td>
+    <td>
+      <p>The type of the VSC platform.</p>
+      <p>Available options: <code>github</code> <code>gitlab</code> <code>bitbucket</code></p>
+      <p>Default: <code>github</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td><code>--vsc:repository</code></td>
+    <td>Sets the repository URL for the project.</td>
+  </tr>
+  <tr>
+    <td><code>--vsc:name</code></td>
+    <td>Sets the username used for version control.</td>
+  </tr>
+  <tr>
+    <td><code>--vsc:email</code></td>
+    <td>Sets the email used for version control.</td>
   </tr>
   <tr>
     <td colspan="2" align="center"><strong>Router</strong></td>
   </tr>
   <tr>
-    <td><code>--router</code></td>
-    <td></td>
+    <td><code>--router:domain</code></td>
+    <td>
+      <p>The public domain of the project.</p>
+      <p>Example: <code>example.com</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td><code>--router:domain:alias</code></td>
+    <td>
+      <p>Adds one or multiple domain aliases to the project.</p>
+      <p>Value format: <code>alias-id:alias-value</code></p>
+      <p>Example value: <code>gb:example.co.uk</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td><code>--router:domain:https</code></td>
+    <td>
+      <p>Enables https for <code>stage</code> and <code>prod</code> environments using <code>letsencrypt</code> as a default provider. Also creates an automatic redirect from http to https.</p>
+    </td>
+  </tr>
+  <tr>
+    <td><code>--router:domain:root</code></td>
+    <td>
+      <p>Sets the web-root of the project.</p>
+      <p>Default: <code>/var/www/html</code></p>
+    </td>
   </tr>
 </tbody>
 </table>
@@ -437,10 +489,10 @@ Deletes a project or a project environment.
 pm project:delete
 ```
 
-| Option               | Description                                    |
+| Argument               | Description                                    |
 | -------------------- | ---------------------------------------------- |
-| `--id`               |  |
-| `--env`              |  |
+| `--id`               | The unique identifier of the project. |
+| `--env`              | The environment. |
 
 ##### project:build
 
@@ -452,13 +504,15 @@ pm project:build
 
 Available arguments:
 
-| Option                | Description |
+| Argument                | Description |
 | --------------------- | ----------- |
-| `--id`                |             |
-| `--env`               |             |
-| `--version`           |             |
+| `--id`                |   The unique identifier of the project.          |
+| `--env`               |   The environment.          |
+| `--version`           |   A version tag of format `major-minor`.          |
 
 ##### project:deploy
+
+Deploys a specific environment / version to the server used by the project.
 
 ```shell
 pm project:deploy
@@ -466,11 +520,11 @@ pm project:deploy
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
-| `--id`      |             |
-| `--env`     |             |
-| `--version` |             |
+| `--id`      | The unique identifier of the project.          |
+| `--env`     | The environment.            |
+| `--version` | A built version tag.            |
 
 ##### project:start
 
@@ -482,11 +536,10 @@ pm project:start
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
-| `--id`      |             |
-| `--env`     |             |
-| `--version` |             |
+| `--id`      | The unique identifier of the project. |
+| `--env`     | The environment. |
 
 ##### project:stop
 
@@ -498,10 +551,10 @@ pm project:stop
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
-| `--id`      |             |
-| `--env`     |             |
+| `--id`      | The unique identifier of the project.            |
+| `--env`     | The environment.            |
 
 
 ##### project:restart
@@ -514,10 +567,10 @@ pm project:restart
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
-| `--id`      |             |
-| `--env`     |             |
+| `--id`      | The unique identifier of the project.            |
+| `--env`     | The environment.            |
 
 ##### project:backup:list
 
@@ -529,10 +582,10 @@ pm project:backup:list
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
-| `--id`      |             |
-| `--env`     |             |
+| `--id`      | The unique identifier of the project.            |
+| `--env`     | The environment.            |
 
 ##### project:backup:create
 
@@ -544,9 +597,9 @@ pm project:backup:create
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
-| `--id`      |             |
+| `--id`      | The unique identifier of the project.            |
 | `--env`     |             |
 | `--backup`  |             |
 
@@ -560,9 +613,9 @@ pm project:backup:restore
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
-| `--id`      |             |
+| `--id`      | The unique identifier of the project.            |
 | `--env`     |             |
 | `--backup`  |             |
 
@@ -576,9 +629,9 @@ pm project:backup:create
 
 Available arguments:
 
-| Option      | Description |
+| Argument      | Description |
 | ----------- | ----------- |
-| `--id`      |             |
+| `--id`      | The unique identifier of the project.            |
 | `--env`     |             |
 | `--backup`  |             |
 
@@ -590,11 +643,11 @@ Synchronizes a project environment to local.
 pm project:sync
 ```
 
-Available flags:
+Available arguments:
 
-| Option    | Description                                    |
+| Argument   | Description                                    |
 | --------- | ---------------------------------------------- |
-| `--source`|                                                |
+| `--source`| The environment to sync the data from. |
 | `--all`   | Default option if no other flag was specified. |
 | `--files` | Sync media files.                              |
 | `--db`    | Sync database(s).                              |
@@ -609,9 +662,9 @@ pm project:config:set
 
 Available arguments:
 
-| Option    | Description                                    |
+| Argument    | Description                                    |
 | --------- | ---------------------------------------------- |
-| `--id`    | |
+| `--id`    | The unique identifier of the project. |
 | `--env`   | |
 | `--key`   | |
 | `--value` | |
@@ -626,9 +679,9 @@ pm project:config:get
 
 Available arguments:
 
-| Option  | Description |
+| Argument  | Description |
 | ------- | ----------- |
-| `--id`  |             |
+| `--id`  | The unique identifier of the project. |
 | `--env` |             |
 | `--key` | |
 
@@ -637,9 +690,16 @@ Available arguments:
 Opens a terminal connection to the service. If **--stage** or **--prod** flag is provided, a remote connection will be opened to the server / environment.
 
 ```shell
-pm project:config:get --id=my-project --{dev|stage|prod} \
-  --service=service-id # nginx | apache | php | mariadb | solr | redis, etc.
+pm project:cli
 ```
+
+Available arguments:
+
+| Argument | Description                           |
+| -------- | ------------------------------------- |
+| `--id`   | The unique identifier of the project. |
+| `--env`  |                                       |
+| `--service` | |
 
 ### Module: Router
 
@@ -665,76 +725,131 @@ A basic nginx reverse proxy implementation to route network traffic.
 ##### router:list
 
 ```shell
-pm router:list \
-  --project=my-project \
-  --{dev|stage|prod}  # The environment
+pm router:list
 ```
+
+Available arguments:
+
+| Argument | Description                           |
+| -------- | ------------------------------------- |
+| `--project`   | The unique identifier of the project. |
+| `--env`  |                                       |
 
 ##### router:create
 
 ```shell
-pm router:create \
-  --project=my-project \
-  --{dev|stage|prod} \ # The environment
-  --domain="example.com"
-  --alias{gb}="example.co.uk"
+pm router:create
 ```
+
+Available arguments:
+
+| Argument    | Description                                    |
+| --------- | ---------------------------------------------- |
+| `--project`    | The unique identifier of the project. |
+| `--env`   | |
 
 ##### router:delete
 
 Completely removes the router definition, including aliases.
 
 ```shell
-pm router:delete --{dev|stage|prod} --project=my-project
+pm router:delete
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--env`     |                                       |
 
 ##### router:update
 
 ```shell
-pm router:update \
-  --project=my-project \
-  --{dev|stage|prod} \ # The environment
-  --domain="example.com"
-  --alias{gb}="example.co.uk"
+pm router:update
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--env`     |                                       |
 
 ##### router:alias:list
 
 ```shell
-pm router:alias:list --{dev|stage|prod} --project=my-project
+pm router:alias:list
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--env`     |                                       |
 
 ##### router:alias:create
 
 ```shell
-pm router:alias:create --{dev|stage|prod} \
-  --project=my-project --alias{gb}=example.co.uk
+pm router:alias:create
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--env`     |                                       |
 
 ##### router:alias:update
 
 ```shell
-pm router:alias:update --{dev|stage|prod} \
-  --project=my-project --alias{gb}=example.co.uk
+pm router:alias:update
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--env`     |                                       |
 
 ##### router:alias:delete
 
 ```shell
-pm router:alias:delete --project=my-project --{dev|stage|prod} --alias=gb
+pm router:alias:delete
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--env`     |                                       |
 
 ##### router:config:set
 
 ```shell
-pm router:config:set --key=config-key --value=config-value
+pm router:config:set
 ```
+
+Available arguments:
+
+| Argument  | Description |
+| --------- | ----------- |
+| `--key`   |             |
+| `--value` |             |
 
 ##### router:config:get
 
 ```shell
 pm router:config:get --key=config-key
 ```
+
+| Argument | Description |
+| -------- | ----------- |
+| `--key`  |             |
 
 ### Module: Docker
 
@@ -870,24 +985,45 @@ This module is responsible to handle docker and service related tasks. It create
 Adds a service to a project.
 
 ```shell
-pm docker:service:add --project=my-project --service=<service-id>
+pm docker:service:add
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--service` |                                       |
 
 ##### docker:service:remove
 
 Removes a service from a project.
 
 ```shell
-pm docker:service:remove --project=my-project --service=<service-id>
+pm docker:service:remove
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--service` |                                       |
 
 ##### docker:service:upgrade
 
 Upgrades a service of the project.
 
 ```shell
-pm docker:service:upgrade --project=my-project --service=<service-id> --version=<version>
+pm docker:service:upgrade
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
+| `--service` |                                       |
 
 ### Module: Framework
 
@@ -966,33 +1102,58 @@ Available add-ons:
 Adds a framework definition to the `project.yml`. A project can only have one framework.
 
 ```shell
-pm framework:add \
-  --project=my-project --framework=<framework-id>:<framework-version>
+pm framework:add
 ```
+Available arguments:
+
+| Argument      | Description                           |
+| ------------- | ------------------------------------- |
+| `--project`   | The unique identifier of the project. |
+| `--framework` |                                       |
 
 ##### framework:remove
 
 Removes the current framework definition from the `project.yml`.
 
 ```shell
-pm framework:remove --project=my-project
+pm framework:remove
 ```
+
+Available arguments:
+
+| Argument      | Description                           |
+| ------------- | ------------------------------------- |
+| `--project`   | The unique identifier of the project. |
 
 ##### framework:upgrade (experimental) `[NYI]`
 
 Runs compatibility checks over the codebase and upgrades the framework to the target version, keeping all custom code as it is.
 
 ```shell
-pm framework:upgrade --project=my-project --framework:version=<target-version>
+pm framework:upgrade
 ```
+
+Available arguments:
+
+| Argument      | Description                           |
+| ------------- | ------------------------------------- |
+| `--project`   | The unique identifier of the project. |
+| `--framework:version` |                                       |
 
 ##### framework:migrate (experimental) `[NYI]`
 
 Migrates the project from a framework to another into a new dev environment.
 
 ```shell
-pm framework:migrate --project=my-project --framework:version=<target-version>
+pm framework:migrate
 ```
+
+Available arguments:
+
+| Argument      | Description                           |
+| ------------- | ------------------------------------- |
+| `--project`   | The unique identifier of the project. |
+| `--target-framework` |                                       |
 
 ### Module: Cloud
 
@@ -1015,32 +1176,60 @@ This module integrates cloud management APIs. It creates / removes servers and p
 Registers a cloud provider to the project.
 
 ```shell
-pm cloud:provider:register --project=my-project --provider=<provider-id> --token=<api-token>
+pm cloud:provider:register
 ```
+
+Available arguments:
+
+| Argument                    | Description                           |
+| --------------------------- | ------------------------------------- |
+| `--project`                 | The unique identifier of the project. |
+| `--provider` |                                       |
+| `--token`                   |                                       |
 
 ##### cloud:provider:unregister
 
 Unregisters a cloud provider from the project.
 
 ```shell
-pm cloud:provider:register --project=my-project --provider=<provider-id>
+pm cloud:provider:register
 ```
+
+Available arguments:
+
+| Argument                    | Description                           |
+| --------------------------- | ------------------------------------- |
+| `--project`                 | The unique identifier of the project. |
+| `--provider` |                                       |
+
 
 ##### cloud:server:list
 
 Lists all servers of the project.
 
 ```shell
-pm cloud:server:list --project=my-project
+pm cloud:server:list
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
 
 ##### cloud:server:create
 
 Creates and adds a cloud server to the project.
 
 ```shell
-pm cloud:server:create --project=my-project --provider=<provider-id>
+pm cloud:server:create
 ```
+
+Available arguments:
+
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--project` | The unique identifier of the project. |
 
 ### Module: VSC
 
