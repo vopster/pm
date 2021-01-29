@@ -26,6 +26,7 @@
         - [Dependencies](#dependencies)
   - [Installation](#installation)
         - [Linux](#linux)
+  - [Command flags](#command-flags)
   - [Modules](#modules)
     - [Module: System](#module-system)
       - [Commands](#commands)
@@ -37,11 +38,15 @@
         - [system:config:get](#systemconfigget)
     - [Module: Project](#module-project)
       - [Project file structure](#project-file-structure)
+        - [`dev` environment on local](#dev-environment-on-local)
+        - [`stage` and `prod` environments on remote server](#stage-and-prod-environments-on-remote-server)
       - [Commands](#commands-1)
         - [project:create](#projectcreate)
         - [project:delete](#projectdelete)
         - [project:build](#projectbuild)
         - [project:deploy](#projectdeploy)
+        - [project:publish](#projectpublish)
+        - [project:status](#projectstatus)
         - [project:start](#projectstart)
         - [project:stop](#projectstop)
         - [project:restart](#projectrestart)
@@ -186,6 +191,14 @@ Yet, there are many premium solutions to handle such tasks, we built a tool what
 # wget -qO pm-setup pm.vopster.com/releases/1.0.0/installer && sudo bash pm-setup
 ```
 
+## Command flags
+
+| Argument  | Description              |
+| --------- | ------------------------ |
+| `--dev`   | Short for: `--env=dev`   |
+| `--stage` | Short for: `--env=stage` |
+| `--prod`  | Short for: `--env=prod`  |
+
 ## Modules
 
 Pluggable extensions to the main application.
@@ -238,10 +251,46 @@ Sets a system configration value by its key.
 pm system:config:set
 ```
 
-| Argument    | Description |
-| --------- | ----------- |
-| `--key`   | Configuration key            |
-| `--value` | Configuration value            |
+| Argument  | Description         |
+| --------- | ------------------- |
+| `--key`   | Configuration key   |
+| `--value` | Configuration value |
+
+Available configurations:
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>env:stage</code></td>
+      <td>
+        <p>Enables / disables the stage environment.</p>
+        <p>This environment is required by <code>pm project:deploy</code> command.</p>
+        <p>Default: <code>True</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>env:prod</code></td>
+      <td>
+        <p>Enables / disables the production environment.</p>
+        <p>This environment is required by <code>pm project:publish</code> command.</p>
+        <p>Default: <code>True</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>versioning</code></td>
+      <td>
+        <p>Enables / disables version specific deploys.</p>
+        <p>Default: <code>True</code></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ##### system:config:get
 
@@ -265,40 +314,58 @@ Project module manages all project related operations.
 
 #### Project file structure
 
+##### `dev` environment on local
+
 ```bash
 $APP_PROJECTS_ROOT # The project storage directory defined in project-manager/.env
 ┣ <project_id> # The unique identifier of the project.
 ┃ ┣ app # The application.
 ┃ ┃ ┣ config
-┃ ┃ ┣ build # Only used by staging and production environments.
-┃ ┃ ┃ ┣ <env>-<version>
-┃ ┃ ┃ ┃ ┣ .env # Environment specific configuration.
-┃ ┃ ┃ ┗ ┗ ... # Built project source.
+┃ ┃ ┣ docker # Docker service definitions.
 ┃ ┃ ┣ src # The source code of the app.
 ┃ ┃ ┣ var # Variable files.
 ┃ ┃ ┃ ┣ data # Persistent storage for services.
-┃ ┃ ┃ ┃ ┣ _shared # Shared data between environments and versions.
-┃ ┃ ┃ ┃ ┃ ┣ ... # Other shared files
-┃ ┃ ┃ ┃ ┃ ┣ files # Environment specific persistent files.
-┃ ┃ ┃ ┃ ┃ ┃ ┣ public
-┃ ┃ ┃ ┃ ┃ ┃ ┣ private
-┃ ┃ ┃ ┃ ┃ ┗ ┗ tmp
-┃ ┃ ┃ ┃ ┣ <env>-<version> # Environment specific persistent storage.
-┃ ┃ ┃ ┃ ┃ ┣ db # The database storage.
-┃ ┃ ┃ ┃ ┃ ┃ ┣ mysql
-┃ ┃ ┃ ┃ ┃ ┃ ┣ postgresql
-┃ ┃ ┃ ┃ ┃ ┃ ┣ mongodb
-┃ ┃ ┃ ┃ ┃ ┃ ┗ ... # Other database storage.
-┃ ┃ ┃ ┃ ┃ ┣ files # Media and other files.
-┃ ┃ ┃ ┃ ┃ ┃ ┣ public
-┃ ┃ ┃ ┃ ┃ ┃ ┣ private
-┃ ┃ ┃ ┃ ┃ ┃ ┗ tmp
-┃ ┃ ┃ ┃ ┃ ┣ search # Search service persistent files.
-┃ ┃ ┗ ┗ ┗ ┗ cache # Cache service persistent files.
-┃ ┣ docker # Docker service definitions.
-┃ ┃ ┗ <env>-<version>
+┃ ┃ ┃ ┃ ┣ db # The database storage.
+┃ ┃ ┃ ┃ ┃ ┣ mysql
+┃ ┃ ┃ ┃ ┃ ┣ postgresql
+┃ ┃ ┃ ┃ ┃ ┣ mongodb
+┃ ┃ ┃ ┃ ┃ ┗ ... # Other database storage.
+┃ ┃ ┃ ┃ ┣ files # Media and other files.
+┃ ┃ ┃ ┃ ┃ ┣ public
+┃ ┃ ┃ ┃ ┃ ┣ private
+┃ ┃ ┃ ┃ ┃ ┗ tmp
+┃ ┃ ┃ ┃ ┣ search # Search service persistent files.
+┃ ┃ ┗ ┗ ┗ cache # Cache service persistent files.
 ┗ ┗ project.yml # Project definition.
 ```
+
+##### `stage` and `prod` environments on remote server
+
+```bash
+$APP_PROJECTS_ROOT # The project storage directory defined in project-manager/.env
+┣ <project_id> # The unique identifier of the project.
+┃ ┣ app # The application.
+┃ ┃ ┣ stage
+┃ ┃ ┃ ┣ <version> # The deployed stage. This directory is skipped if versioning is disabled.
+┃ ┃ ┃ ┃ ┣ docker
+┃ ┃ ┃ ┃ ┣ var
+┃ ┃ ┃ ┗ ┗ htdocs
+┃ ┃ ┣ prod
+┃ ┃ ┃ ┣ <version> # The published prod. This directory is skipped if versioning is disabled.
+┃ ┃ ┃ ┃ ┣ docker
+┃ ┃ ┃ ┃ ┣ var
+┃ ┃ ┃ ┗ ┗ htdocs
+┃ ┣ var # Variable files.
+┃ ┃ ┣ data # Persistent storage for services.
+┃ ┃ ┃ ┣ _shared # Shared data between environments and versions.
+┃ ┃ ┃ ┃ ┣ ... # Other shared files
+┃ ┃ ┃ ┃ ┣ files # Environment specific persistent files.
+┃ ┃ ┃ ┃ ┃ ┣ public
+┃ ┃ ┃ ┃ ┃ ┣ private
+┃ ┃ ┗ ┗ ┗ ┗ tmp
+┗ ┗ project.yml # Project definition.
+```
+
 
 #### Commands
 
@@ -490,11 +557,11 @@ Deletes a project or a project environment.
 ```shell
 pm project:delete
 ```
+Available arguments:
 
-| Argument               | Description                                    |
-| -------------------- | ---------------------------------------------- |
-| `--id`               | The unique identifier of the project. |
-| `--env`              | The environment. |
+| Argument | Description                           |
+| -------- | ------------------------------------- |
+| `--id`   | The unique identifier of the project. |
 
 ##### project:build
 
@@ -506,15 +573,13 @@ pm project:build
 
 Available arguments:
 
-| Argument                | Description |
-| --------------------- | ----------- |
-| `--id`                |   The unique identifier of the project.          |
-| `--env`               |   The environment.          |
-| `--version`           |   A version tag of format `major-minor`.          |
+| Argument    | Description                            |
+| ----------- | -------------------------------------- |
+| `--id`      | The unique identifier of the project.  |
 
 ##### project:deploy
 
-Deploys a specific environment / version to the server used by the project.
+Deploys a new version to `stage` environment.
 
 ```shell
 pm project:deploy
@@ -522,11 +587,39 @@ pm project:deploy
 
 Available arguments:
 
-| Argument      | Description |
-| ----------- | ----------- |
-| `--id`      | The unique identifier of the project.          |
-| `--env`     | The environment.            |
-| `--version` | A built version tag.            |
+| Argument    | Description                           |
+| ----------- | ------------------------------------- |
+| `--id`      | The unique identifier of the project. |
+
+##### project:publish
+
+Publishes the latest or a specific version to `prod` environment.
+
+```shell
+pm project:publish
+```
+
+Available arguments:
+
+| Argument    | Description                                     |
+| ----------- | ----------------------------------------------- |
+| `--id`      | The unique identifier of the project.           |
+| `--version` | An existing version identifier. Default: `None` |
+
+
+##### project:status
+
+Lists the current status of all environments of the project.
+
+```shell
+pm project:status
+```
+
+Available arguments:
+
+| Argument | Description                           |
+| -------- | ------------------------------------- |
+| `--id`   | The unique identifier of the project. |
 
 ##### project:start
 
@@ -538,10 +631,11 @@ pm project:start
 
 Available arguments:
 
-| Argument      | Description |
-| ----------- | ----------- |
-| `--id`      | The unique identifier of the project. |
-| `--env`     | The environment. |
+| Argument | Description                           |
+| -------- | ------------------------------------- |
+| `--id`   | The unique identifier of the project. |
+| `--env`  | The environment. Default: `dev`       |
+| `--all`  | Flags all environments to start.      |
 
 ##### project:stop
 
@@ -553,11 +647,11 @@ pm project:stop
 
 Available arguments:
 
-| Argument      | Description |
-| ----------- | ----------- |
-| `--id`      | The unique identifier of the project.            |
-| `--env`     | The environment.            |
-
+| Argument | Description                           |
+| -------- | ------------------------------------- |
+| `--id`   | The unique identifier of the project. |
+| `--env`  | The environment. Default: `dev`       |
+| `--all`  | Flags all environments to stop.       |
 
 ##### project:restart
 
@@ -569,10 +663,11 @@ pm project:restart
 
 Available arguments:
 
-| Argument      | Description |
-| ----------- | ----------- |
-| `--id`      | The unique identifier of the project.            |
-| `--env`     | The environment.            |
+| Argument | Description                           |
+| -------- | ------------------------------------- |
+| `--id`   | The unique identifier of the project. |
+| `--env`  | The environment. Default: `dev`       |
+| `--all`  | Flags all environments to restart.    |
 
 ##### project:backup:list
 
@@ -584,10 +679,11 @@ pm project:backup:list
 
 Available arguments:
 
-| Argument      | Description |
-| ----------- | ----------- |
-| `--id`      | The unique identifier of the project.            |
-| `--env`     | The environment.            |
+| Argument | Description                                                         |
+| -------- | ------------------------------------------------------------------- |
+| `--id`   | The unique identifier of the project.                               |
+| `--env`  | The environment. Available options: `stage` `prod`. Default: `prod` |
+| `--all`  | Flags all environments.                                             |
 
 ##### project:backup:create
 
@@ -599,11 +695,11 @@ pm project:backup:create
 
 Available arguments:
 
-| Argument      | Description |
-| ----------- | ----------- |
-| `--id`      | The unique identifier of the project.            |
-| `--env`     |             |
-| `--backup`  |             |
+| Argument   | Description                                                         |
+| ---------- | ------------------------------------------------------------------- |
+| `--id`     | The unique identifier of the project.                               |
+| `--env`    | The environment. Available options: `stage` `prod`. Default: `prod` |
+| `--backup` | The unique identifier of the backup.                                |
 
 ##### project:backup:restore
 
@@ -615,11 +711,11 @@ pm project:backup:restore
 
 Available arguments:
 
-| Argument      | Description |
-| ----------- | ----------- |
-| `--id`      | The unique identifier of the project.            |
-| `--env`     |             |
-| `--backup`  |             |
+| Argument   | Description                                                         |
+| ---------- | ------------------------------------------------------------------- |
+| `--id`     | The unique identifier of the project.                               |
+| `--env`    | The environment. Available options: `stage` `prod`. Default: `prod` |
+| `--backup` | The unique identifier of the backup.                                |
 
 ##### project:backup:delete
 
@@ -631,11 +727,11 @@ pm project:backup:create
 
 Available arguments:
 
-| Argument      | Description |
-| ----------- | ----------- |
-| `--id`      | The unique identifier of the project.            |
-| `--env`     |             |
-| `--backup`  |             |
+| Argument   | Description                                                         |
+| ---------- | ------------------------------------------------------------------- |
+| `--id`     | The unique identifier of the project.                               |
+| `--env`    | The environment. Available options: `stage` `prod`. Default: `prod` |
+| `--backup` | The unique identifier of the backup.                                |
 
 ##### project:sync
 
@@ -647,12 +743,11 @@ pm project:sync
 
 Available arguments:
 
-| Argument   | Description                                    |
-| --------- | ---------------------------------------------- |
-| `--source`| The environment to sync the data from. |
-| `--all`   | Default option if no other flag was specified. |
-| `--files` | Sync media files.                              |
-| `--db`    | Sync database(s).                              |
+| Argument   | Description                                                            |
+| ---------- | ---------------------------------------------------------------------- |
+| `--source` | The environment to sync the data from.                                 |
+| `--data`   | The data type to sync. Available options: `files` `db`. Default: `all` |
+
 
 ##### project:config:set
 
@@ -664,12 +759,11 @@ pm project:config:set
 
 Available arguments:
 
-| Argument    | Description                                    |
-| --------- | ---------------------------------------------- |
+| Argument  | Description                           |
+| --------- | ------------------------------------- |
 | `--id`    | The unique identifier of the project. |
-| `--env`   | |
-| `--key`   | |
-| `--value` | |
+| `--key`   | The configuration key.                |
+| `--value` | The configuration value.              |
 
 ##### project:config:get
 
@@ -681,11 +775,10 @@ pm project:config:get
 
 Available arguments:
 
-| Argument  | Description |
-| ------- | ----------- |
-| `--id`  | The unique identifier of the project. |
-| `--env` |             |
-| `--key` | |
+| Argument | Description                           |
+| -------- | ------------------------------------- |
+| `--id`   | The unique identifier of the project. |
+| `--key`  | The configuration key.                |
 
 ##### project:cli
 
@@ -697,11 +790,11 @@ pm project:cli
 
 Available arguments:
 
-| Argument | Description                           |
-| -------- | ------------------------------------- |
-| `--id`   | The unique identifier of the project. |
-| `--env`  |                                       |
-| `--service` | |
+| Argument    | Description                                                              |
+| ----------- | ------------------------------------------------------------------------ |
+| `--id`      | The unique identifier of the project.                                    |
+| `--env`     | The environment. Available options: `dev` `stage` `prod`. Default: `dev` |
+| `--service` | The identifier of the service. Example: `php` `cache` `db` etc.          |
 
 ### Module: Router
 
@@ -736,10 +829,9 @@ pm router:list
 
 Available arguments:
 
-| Argument | Description                           |
-| -------- | ------------------------------------- |
-| `--project`   | The unique identifier of the project. |
-| `--env`  |                                       |
+| Argument    | Description                                                              |
+| ----------- | ------------------------------------------------------------------------ |
+| `--project` | The unique identifier of the project.                                    |
 
 ##### router:create
 
@@ -749,10 +841,13 @@ pm router:create
 
 Available arguments:
 
-| Argument    | Description                                    |
-| --------- | ---------------------------------------------- |
-| `--project`    | The unique identifier of the project. |
-| `--env`   | |
+| Argument                 | Description                                                                                                                                        |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--project`              | The unique identifier of the project.                                                                                                              |
+| `--domain`               | Sets the public domain of the project.                                                                                                             |
+| `--domain:alias`         | Sets one or multiple domain aliases of the project.                                                                                                |
+| `--domain:https`         | Enables https for `stage` or `prod` environments using `letsencrypt` as a default provider. Also creates an automatic redirect from http to https. |
+| `--domain:root`          | Sets the web-root of the project. Default: `/var/www/html`                                                                                         |
 
 ##### router:delete
 
@@ -764,10 +859,10 @@ pm router:delete
 
 Available arguments:
 
-| Argument    | Description                           |
-| ----------- | ------------------------------------- |
-| `--project` | The unique identifier of the project. |
-| `--env`     |                                       |
+| Argument    | Description                             |
+| ----------- | --------------------------------------- |
+| `--project` | The unique identifier of the project.   |
+| `--domain`  | The domain name attached to the router. |
 
 ##### router:update
 
@@ -777,10 +872,15 @@ pm router:update
 
 Available arguments:
 
-| Argument    | Description                           |
-| ----------- | ------------------------------------- |
-| `--project` | The unique identifier of the project. |
-| `--env`     |                                       |
+| Argument                | Description                                                                                                                                        |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--project`             | The unique identifier of the project.                                                                                                              |
+| `--domain`              | Sets the public domain of the project.                                                                                                             |
+| `--domain:alias`        | Sets one or multiple domain aliases of the project.                                                                                                |
+| `--domain:alias:remove` | Removes one or multiple domain aliases from the project.                                                                                           |
+| `--https`               | Enables https. Also creates an automatic redirect from http to https. |
+| `--https:disable`       | Disables https. Also removes the automatic redirect from http to https.                                         |
+| `--root`                | Sets the web-root of the project. Default: `/var/www/html`                                                                                         |
 
 ##### router:alias:list
 
@@ -793,9 +893,10 @@ Available arguments:
 | Argument    | Description                           |
 | ----------- | ------------------------------------- |
 | `--project` | The unique identifier of the project. |
-| `--env`     |                                       |
 
 ##### router:alias:create
+
+Creates a domain alias for the project.
 
 ```shell
 pm router:alias:create
@@ -806,22 +907,29 @@ Available arguments:
 | Argument    | Description                           |
 | ----------- | ------------------------------------- |
 | `--project` | The unique identifier of the project. |
-| `--env`     |                                       |
+| `--alias`   | The domain alias.                     |
+
 
 ##### router:alias:update
+
+Updates a domain alias of the project.
 
 ```shell
 pm router:alias:update
 ```
+Updates an existing domain alias of the project.
 
 Available arguments:
 
-| Argument    | Description                           |
-| ----------- | ------------------------------------- |
-| `--project` | The unique identifier of the project. |
-| `--env`     |                                       |
+| Argument      | Description                           |
+| ------------- | ------------------------------------- |
+| `--project`   | The unique identifier of the project. |
+| `--alias:old` | The old domain alias.                 |
+| `--alias:new` | The new domain alias.                 |
 
 ##### router:alias:delete
+
+Deletes a domain alias from the project.
 
 ```shell
 pm router:alias:delete
@@ -832,9 +940,11 @@ Available arguments:
 | Argument    | Description                           |
 | ----------- | ------------------------------------- |
 | `--project` | The unique identifier of the project. |
-| `--env`     |                                       |
+| `--alias`   | The domain alias.                     |
 
 ##### router:config:set
+
+Sets a router configuration value.
 
 ```shell
 pm router:config:set
@@ -842,20 +952,69 @@ pm router:config:set
 
 Available arguments:
 
-| Argument  | Description |
-| --------- | ----------- |
-| `--key`   |             |
-| `--value` |             |
+| Argument  | Description             |
+| --------- | ----------------------- |
+| `--key`   | The configuration key   |
+| `--value` | The configuration value |
+
+Available configurations:
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>type</code></td>
+      <td>
+        <p>Options: <code>traefik</code> <code>haproxy</code> <code>nginx</code> <code>zookeeper</code></p>
+        <p>Default: <code>traefik</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>https:enabled</code></td>
+      <td>
+        Default: <code>True</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>https:provider</code></td>
+      <td>
+        <p>Options: <code>letsencrypt</code> <code>custom</code> </p>
+        <p>Default: <code>letsencrypt</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>network:private</code></td>
+      <td>
+        Default: <code>pm-private-net</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>network:public</code></td>
+      <td>
+        Default: <code>pm-public-net</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 ##### router:config:get
 
+Returns a router configuration value.
+
 ```shell
-pm router:config:get --key=config-key
+pm router:config:get
 ```
 
-| Argument | Description |
-| -------- | ----------- |
-| `--key`  |             |
+| Argument | Description            |
+| -------- | ---------------------- |
+| `--key`  | The configuration key. |
 
 ### Module: Docker
 
